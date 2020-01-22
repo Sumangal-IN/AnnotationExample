@@ -1,6 +1,9 @@
 package com.spring.io;
 
 import java.util.Arrays;
+import java.util.Set;
+
+import org.reflections.Reflections;
 
 public class SpringApplication {
 
@@ -11,7 +14,14 @@ public class SpringApplication {
 			if (Class.forName(classz.getCanonicalName()).isAnnotationPresent(ComponentScan.class)) {
 				System.out.println("Componenet scan present");
 				ComponentScan components = Class.forName(classz.getCanonicalName()).getAnnotation(ComponentScan.class);
-				System.out.println(Arrays.asList(components.value()));
+				for (String packagePath : Arrays.asList(components.value())) {
+					System.out.println("Scanning package: " + packagePath);
+					Reflections reflections = new Reflections("com.kingfisher.jira.controller");
+					Set<String> classes = reflections.getAllTypes();
+					for (String classx : classes) {
+						System.out.println(classx);
+					}
+				}
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
